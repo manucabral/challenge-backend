@@ -5,8 +5,8 @@
 
 // required modules
 const express = require('express')
-const compression = require('compression')
 const morgan = require('morgan')
+const compression = require('compression')
 const { PORT } = require('./config')
 
 // create the express app
