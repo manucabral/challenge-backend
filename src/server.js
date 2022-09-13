@@ -9,6 +9,10 @@ const morgan = require('morgan')
 const compression = require('compression')
 const { PORT } = require('./config')
 
+// required routes
+const charactersRoutes = require('./routes/characters.routes')
+const moviesRoutes = require('./routes/movies.routes')
+
 // create the express app
 const app = express()
 const logger = morgan('dev')
@@ -21,6 +25,13 @@ app.use(compression())
 
 // use the morgan middleware
 app.use(logger)
+
+// use json data
+app.use(express.json())
+
+// use routes
+app.use('/characters', charactersRoutes)
+app.use('/movies', moviesRoutes)
 
 // export the app
 module.exports = app
