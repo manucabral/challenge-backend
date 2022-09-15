@@ -1,3 +1,7 @@
+/**
+ * @file Contains movie controller
+ */
+
 const { Movie } = require('../models')
 
 const getMovies = async (req, res) => {
