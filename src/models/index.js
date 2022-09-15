@@ -6,6 +6,7 @@
 const MovieCast = require('./MovieCast')
 const Character = require('./Character')
 const Movie = require('./Movie')
+const User = require('./User')
 
 // M-N relationship between movies and characters
 Movie.belongsToMany(Character, { through: MovieCast })
@@ -14,4 +15,5 @@ Character.belongsToMany(Movie, { through: MovieCast })
 module.exports = {
   Character,
   Movie,
+  User,
 }
