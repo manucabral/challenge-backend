@@ -1,6 +1,5 @@
 /**
  * @file Contains the express server configuration.
- * @author Manuel Cabral
  */
 
 // required modules

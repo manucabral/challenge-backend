@@ -1,6 +1,5 @@
 /**
  * @file Contains all variables used in the app.
- * @author Manuel Cabral
  */
 
 // required modules

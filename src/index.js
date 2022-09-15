@@ -1,6 +1,5 @@
 /**
  * @file Contains the main entry point for the app.
- * @author Manuel Cabral
  */
 
 // required modules
