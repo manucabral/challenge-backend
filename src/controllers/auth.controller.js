@@ -13,8 +13,9 @@ const register = async (req, res) => {
   if (!req.body.email || !req.body.password)
     return res.status(400).send({ message: 'Email and password are required' })
   try {
-    const user = await User.create(req.body)
-    res.status(201).json(user)
+    let user = await User.create(req.body)
+    const token = await user.generateToken()
+    res.status(201).json({ token })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
@@ -28,13 +29,14 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   if (!req.body.email || !req.body.password)
     return res.status(400).send({ message: 'Email and password are required' })
+
   try {
     const user = await User.findOne({ where: { email: req.body.email } })
     if (!user) return res.status(404).send({ message: 'User not found' })
     const valid = await user.isValidPassword(req.body.password)
     if (!valid) return res.status(401).send({ message: 'Invalid password' })
     const token = await user.generateToken()
-    res.status(200).json({ user, token })
+    res.status(200).json({ token })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
