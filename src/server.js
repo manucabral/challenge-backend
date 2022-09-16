@@ -5,6 +5,7 @@
 // required modules
 const express = require('express')
 const morgan = require('morgan')
+const auth = require('./middlewares/auth')
 const compression = require('compression')
 const { PORT } = require('./config')
 
@@ -31,8 +32,8 @@ app.use(express.json())
 
 // use routes
 app.use('/auth', authRoutes)
-app.use('/characters', charactersRoutes)
-app.use('/movies', moviesRoutes)
+app.use('/characters', auth, charactersRoutes)
+app.use('/movies', auth, moviesRoutes)
 
 // export the app
 module.exports = app
