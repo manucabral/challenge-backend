@@ -3,6 +3,7 @@
  */
 
 const { User } = require('../models')
+const { sendWelcomeEmail, canSendEmail } = require('../utils/email')
 
 /**
  * Register and create a new user.
@@ -15,6 +16,15 @@ const register = async (req, res) => {
   try {
     let user = await User.create(req.body)
     const token = await user.generateToken()
+    if (canSendEmail())
+      await sendWelcomeEmail({
+        email: user.email,
+        name: 'tester',
+      })
+    else
+      console.log(
+        "Can't send email. Please provide a valid API key and email address."
+      )
     res.status(201).json({ token })
   } catch (error) {
     res.status(500).json({ error: error.message })
