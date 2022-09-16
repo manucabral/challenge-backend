@@ -32,3 +32,5 @@ npm run test
 Create a `.env` file using the next [example](https://github.com/manucabral/challenge-backend/blob/main/.env.example)
 If you not define these variables you may have an **error**
 
+For lazy people, you can fill the tables enabling _DATABASE_FILL_
+
