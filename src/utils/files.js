@@ -11,11 +11,16 @@ const { HOST, PORT, PROTOCOL } = require('../config')
  * @returns {String} The image url.
  */
 const uploadImage = async (files) => {
-  let image_url = `${PROTOCOL}://${HOST}:${PORT}/images/default.png`
+  let image_url =
+    PROTOCOL +
+    '://' +
+    HOST +
+    (PROTOCOL === 'http' ? `:${PORT}` : '') +
+    '/images/default.png'
   if (files && files.image) {
     const { image } = files
     await image.mv(`${process.cwd()}/public/images/${image.name}`)
-    image_url = `${PROTOCOL}://${HOST}:${PORT}/images/${image.name}`
+    image_url.replace('default.png', image.name)
   }
   return image_url
 }
