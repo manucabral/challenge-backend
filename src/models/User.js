@@ -5,6 +5,7 @@
 const Sequelize = require('sequelize')
 const { sequelize } = require('../database')
 const { encrypt } = require('../utils/bcrypt')
+const { generateToken } = require('../utils/jwt')
 
 const User = sequelize.define(
   'user',
@@ -37,5 +38,32 @@ User.beforeCreate(async (user, _) => {
     console.log(error)
   }
 })
+
+/**
+ * Check if the password is valid.
+ * @param {string} password - The password to check.
+ * @returns {boolean} True if the password is valid, false otherwise.
+ */
+User.prototype.isValidPassword = async function (password) {
+  try {
+    return await bcrypt.compare(password, this.password)
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+/**
+ * Generate a token for the user.
+ * @returns {string} The token.
+ * @throws {Error} If the token cannot be generated.
+ */
+User.prototype.generateToken = async function () {
+  try {
+    const payload = { email: this.email }
+    return await generateToken(payload)
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 
 module.exports = User
