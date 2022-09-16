@@ -5,16 +5,18 @@
 const { Sequelize } = require('sequelize')
 const { DATABASE } = require('./config')
 
+// postgresql://postgres:S8e6fjqfbE975eJvCalM@containers-us-west-80.railway.app:7366/railway
 const sequelize = new Sequelize(
   DATABASE.NAME,
-  DATABASE.USERNAME,
+  DATABASE.USER,
   DATABASE.PASSWORD,
   {
     host: DATABASE.HOST,
+    port: DATABASE.PORT,
     dialect: DATABASE.DIALECT,
+    logging: false,
   }
 )
-
 const connectDatabase = async () => {
   try {
     await sequelize.sync({

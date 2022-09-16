@@ -18,11 +18,12 @@ module.exports = {
   },
 
   DATABASE: {
-    NAME: process.env.DATABASE_NAME || 'disney',
+    USER: process.env.DATABASE_USERNAME || 'postgres',
+    PASSWORD: process.env.DATABASE_PASSWORD || 'postgres',
     HOST: process.env.DATABASE_HOST || 'localhost',
-    DIALECT: process.env.DATABASE_DIALECT || 'postgres',
-    USERNAME: process.env.DATABASE_USERNAME || 'postgres',
-    PASSWORD: process.env.DATABASE_PASSWORD || 'supersecret',
+    PORT: process.env.DATABASE_PORT || 5432,
+    NAME: process.env.DATABASE_NAME || 'disney',
     FILL: process.env.DATABASE_FILL === 'true' || false,
+    DIALECT: process.env.DATABASE_DIALECT || 'postgres',
   },
 }
