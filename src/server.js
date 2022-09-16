@@ -14,6 +14,7 @@ const { PORT } = require('./config')
 // required routes
 const charactersRoutes = require('./routes/characters.routes')
 const moviesRoutes = require('./routes/movies.routes')
+const genresRoutes = require('./routes/genres.routes')
 const authRoutes = require('./routes/auth.routes')
 
 // create the express app
@@ -46,6 +47,7 @@ app.use(express.static(publicPath))
 app.use('/auth', authRoutes)
 app.use('/characters', auth, charactersRoutes)
 app.use('/movies', auth, moviesRoutes)
+app.use('/genres', auth, genresRoutes)
 
 // export the app
 module.exports = app
