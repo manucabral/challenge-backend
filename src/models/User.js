@@ -4,7 +4,7 @@
 
 const Sequelize = require('sequelize')
 const { sequelize } = require('../database')
-const { encrypt } = require('../utils/bcrypt')
+const { encrypt, compare } = require('../utils/bcrypt')
 const { generateToken } = require('../utils/jwt')
 
 const User = sequelize.define(
@@ -46,7 +46,7 @@ User.beforeCreate(async (user, _) => {
  */
 User.prototype.isValidPassword = async function (password) {
   try {
-    return await bcrypt.compare(password, this.password)
+    return await compare(password, this.password)
   } catch (error) {
     throw new Error(error)
   }
