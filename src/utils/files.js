@@ -20,7 +20,7 @@ const uploadImage = async (files) => {
   if (files && files.image) {
     const { image } = files
     await image.mv(`${process.cwd()}/public/images/${image.name}`)
-    image_url.replace('default.png', image.name)
+    image_url = image_url.replace('default.png', image.name)
   }
   return image_url
 }
