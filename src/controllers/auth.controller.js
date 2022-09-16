@@ -1,5 +1,5 @@
 /**
- * @file Contains the user controller.
+ * @file Contains the auth controller.
  */
 
 const { User } = require('../models')
