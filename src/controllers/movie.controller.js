@@ -3,6 +3,7 @@
  */
 
 const { Movie } = require('../models')
+const { uploadImage } = require('../utils/files')
 
 const getMovies = async (req, res) => {
   try {
@@ -20,11 +21,14 @@ const getMovies = async (req, res) => {
  * @param {Object} res - The response object.
  */
 const createMovie = async (req, res) => {
-  const { title, image, releaseDate, qualification } = req.body
+  const { title, releaseDate, qualification } = req.body
+  if (!title || !qualification)
+    return res.status(400).json({ message: 'Missing required fields' })
   try {
+    const image_url = await uploadImage(req.files)
     const movie = await Movie.create({
       title,
-      image,
+      image: image_url,
       releaseDate,
       qualification,
     })

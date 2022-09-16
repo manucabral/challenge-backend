@@ -5,6 +5,7 @@
 // required modules
 const { Op } = require('sequelize')
 const { Character, Movie } = require('../models')
+const { uploadImage } = require('../utils/files')
 
 /**
  * Get all characters from the database.
@@ -49,16 +50,17 @@ const getOneCharacter = async (req, res) => {
 const createCharacter = async (req, res) => {
   const { name, image, age, weight, history, movieId } = req.body
 
-  if (!name || !image || !age || !weight || !history || !movieId)
+  if (!name || !age || !weight || !history || !movieId)
     return res.status(400).json({ message: 'Missing fields' })
 
   const movie = await Movie.findOne({ where: { id: movieId } })
   if (!movie) return res.status(404).json({ message: 'Movie not found' })
 
   try {
+    const image_url = await uploadImage(image)
     const newCharacter = await Character.create({
       name,
-      image,
+      image: image_url,
       age,
       weight,
       history,
