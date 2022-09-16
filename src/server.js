@@ -3,10 +3,12 @@
  */
 
 // required modules
+const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
 const auth = require('./middlewares/auth')
 const compression = require('compression')
+const fileUpload = require('express-fileupload')
 const { PORT } = require('./config')
 
 // required routes
@@ -17,6 +19,7 @@ const authRoutes = require('./routes/auth.routes')
 // create the express app
 const app = express()
 const logger = morgan('dev')
+const publicPath = path.resolve(__dirname, '../public')
 
 // set the port
 app.set('port', PORT)
@@ -29,6 +32,15 @@ app.use(logger)
 
 // use json data
 app.use(express.json())
+
+/**
+ * use express-fileupload middleware
+ * NOTE: do not store files, better use a cloud service. This is just for demo purposes.
+ */
+app.use(fileUpload())
+
+// use public folder
+app.use(express.static(publicPath))
 
 // use routes
 app.use('/auth', authRoutes)
