@@ -2,6 +2,7 @@
 
 This is a REST API backend challenge from Alkemy
 
+The API is deployed [here](https://disney-challenge.up.railway.app/) you can test it
 ### 📚 Documentation
 See the full API documentation [here]()
 
