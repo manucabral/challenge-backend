@@ -1,10 +1,4 @@
-[
-    {
-        "email": "test@gmail.com",
-        "password": "wowsuperpass"
-    },
-    {
-        "email": "original@gmail.com",
-        "password": "nicepass"
-    }
-]
+{
+    "email": "test@gmail.com",
+    "password": "wowsuperpass"
+}
