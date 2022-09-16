@@ -24,10 +24,11 @@ const connectDatabase = async () => {
     console.log(`Database ${DATABASE.NAME} connected successfully`)
     if (DATABASE.FILL) {
       console.log('Filling the database ..')
-      const { User, Movie } = require('./models')
+      const { User, Movie, Genre } = require('./models')
       const fill = require('./utils/database')
       await fill(User)
       await fill(Movie, { bulk: true })
+      await fill(Genre, { bulk: true })
     }
   } catch (error) {
     console.log('Unable to connect to the database:', error)
