@@ -18,9 +18,14 @@ const sequelize = new Sequelize(
 const connectDatabase = async () => {
   try {
     await sequelize.sync({
-      force: false,
+      force: DATABASE.FILL,
     })
     console.log(`Database ${DATABASE.NAME} connected successfully`)
+    if (DATABASE.FILL) {
+      console.log('Filling the database ..')
+      const fill = require('./utils/database')
+      await fill(sequelize.models.user)
+    }
   } catch (error) {
     console.log('Unable to connect to the database:', error)
   }
