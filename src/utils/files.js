@@ -3,7 +3,7 @@
  */
 
 // required modules
-const { HOST, PORT } = require('../config')
+const { HOST, PORT, PROTOCOL } = require('../config')
 
 /**
  * Uploads an image to the server if files are provided.
@@ -11,11 +11,11 @@ const { HOST, PORT } = require('../config')
  * @returns {String} The image url.
  */
 const uploadImage = async (files) => {
-  let image_url = `http://${HOST}:${PORT}/images/default.png`
+  let image_url = `${PROTOCOL}://${HOST}:${PORT}/images/default.png`
   if (files && files.image) {
     const { image } = files
     await image.mv(`${process.cwd()}/public/images/${image.name}`)
-    image_url = `http://${HOST}:${PORT}/images/${image.name}`
+    image_url = `${PROTOCOL}://${HOST}:${PORT}/images/${image.name}`
   }
   return image_url
 }

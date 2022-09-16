@@ -9,8 +9,9 @@ const { config } = require('dotenv')
 config()
 
 module.exports = {
-  HOST: process.env.HOST,
+  HOST: process.env.HOST || 'localhost',
   PORT: process.env.PORT || 3000,
+  PROTOCOL: process.env.PROTOCOL || 'http',
 
   JWT: {
     SECRET: process.env.JWT_SECRET || 'secretwow',
@@ -19,11 +20,11 @@ module.exports = {
 
   DATABASE: {
     USER: process.env.DATABASE_USERNAME || 'postgres',
-    PASSWORD: process.env.DATABASE_PASSWORD || 'postgres',
+    PASSWORD: process.env.DATABASE_PASSWORD || 'supersecret',
     HOST: process.env.DATABASE_HOST || 'localhost',
     PORT: process.env.DATABASE_PORT || 5432,
     NAME: process.env.DATABASE_NAME || 'disney',
-    FILL: process.env.DATABASE_FILL === 'true' || false,
+    FILL: process.env.DATABASE_FILL === 'true' || true,
     DIALECT: process.env.DATABASE_DIALECT || 'postgres',
   },
 }
