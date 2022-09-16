@@ -23,8 +23,10 @@ const connectDatabase = async () => {
     console.log(`Database ${DATABASE.NAME} connected successfully`)
     if (DATABASE.FILL) {
       console.log('Filling the database ..')
+      const { User, Movie } = require('./models')
       const fill = require('./utils/database')
-      await fill(sequelize.models.user)
+      await fill(User)
+      await fill(Movie, { bulk: true })
     }
   } catch (error) {
     console.log('Unable to connect to the database:', error)
