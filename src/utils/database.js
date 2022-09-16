@@ -11,7 +11,7 @@ const fill = async (model, options) => {
   const bulk = options && options.bulk
   try {
     const table_name = model.getTableName()
-    const data = require(`../data/${table_name}.json`)
+    const data = require(`../../data/${table_name}.json`)
     if (!bulk) await model.create(data)
     else await model.bulkCreate(data)
     console.log(`Table ${table_name} filled successfully`)
