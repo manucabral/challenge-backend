@@ -48,7 +48,7 @@ const getOneCharacter = async (req, res) => {
  * @param {Object} res - Response object.
  */
 const createCharacter = async (req, res) => {
-  const { name, image, age, weight, history, movieId } = req.body
+  const { name, age, weight, history, movieId } = req.body
 
   if (!name || !age || !weight || !history || !movieId)
     return res.status(400).json({ message: 'Missing fields' })
@@ -57,7 +57,7 @@ const createCharacter = async (req, res) => {
   if (!movie) return res.status(404).json({ message: 'Movie not found' })
 
   try {
-    const image_url = await uploadImage(image)
+    const image_url = await uploadImage(req.files)
     const newCharacter = await Character.create({
       name,
       image: image_url,
@@ -66,6 +66,7 @@ const createCharacter = async (req, res) => {
       history,
     })
     await newCharacter.addMovie([movie])
+    await movie.addCharacter([newCharacter])
     res.json(newCharacter)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -90,9 +91,10 @@ const updateCharacter = async (req, res) => {
     const character = await Character.findOne({ where: { id: req.params.id } })
     if (!character)
       return res.status(404).json({ message: 'Character not found' })
-    await character.update({ name, image, age, weight, history })
+    const image_url = req.files ? await uploadImage(req.files) : character.image
+    await character.update({ name, image: image_url, age, weight, history })
     await character.setMovies([movie])
-    res.json(character)
+    res.json({ message: 'Character updated successfully', character })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -124,6 +126,7 @@ const deleteCharacter = async (req, res) => {
 const filterCharacters = async (req, res) => {
   const availableFilters = ['name', 'age', 'movie']
   const filterField = Object.keys(req.query)[0]
+  const value = req.query[filterField]
 
   if (!availableFilters.includes(filterField))
     return res.status(400).json({ message: 'Invalid filter' })
@@ -132,13 +135,9 @@ const filterCharacters = async (req, res) => {
     where: {},
     include: { model: Movie },
   }
-
-  if (filterField === 'name')
-    options.where.name = { [Op.iLike]: `%${req.query.name}%` }
-  else if (filterField === 'age') options.where.age = { [Op.eq]: req.query.age }
-  else if (filterField === 'movie')
-    options.include.where = { id: req.query.movie }
-
+  if (filterField === 'name') options.where.name = { [Op.iLike]: `%${value}%` }
+  if (filterField === 'age') options.where.age = { [Op.eq]: value }
+  if (filterField === 'movie') options.include.where = { id: value }
   try {
     const characters = await Character.findAll(options)
     if (characters.length == 0)
