@@ -23,7 +23,7 @@ const Character = sequelize.define('character', {
   weight: {
     type: Sequelize.FLOAT,
   },
-  history: {
+  story: {
     // limit to 64 KB (65.535 characters)
     type: Sequelize.TEXT,
   },

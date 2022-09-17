@@ -48,9 +48,9 @@ const getOneCharacter = async (req, res) => {
  * @param {Object} res - Response object.
  */
 const createCharacter = async (req, res) => {
-  const { name, age, weight, history, movieId } = req.body
+  const { name, age, weight, story, movieId } = req.body
 
-  if (!name || !age || !weight || !history || !movieId)
+  if (!name || !age || !weight || !story || !movieId)
     return res.status(400).json({ message: 'Missing fields' })
 
   const movie = await Movie.findOne({ where: { id: movieId } })
@@ -63,7 +63,7 @@ const createCharacter = async (req, res) => {
       image: image_url,
       age,
       weight,
-      history,
+      story,
     })
     await newCharacter.addMovie([movie])
     await movie.addCharacter([newCharacter])
