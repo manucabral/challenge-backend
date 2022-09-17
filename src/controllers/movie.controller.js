@@ -84,10 +84,13 @@ const updateMovie = async (req, res) => {
   if (!title || !qualification)
     return res.status(400).json({ message: 'Missing required fields' })
   try {
-    const genre = await Genre.findOne({ where: { id: genreId } })
-    if (!genre) return res.status(404).json({ message: 'Genre not found' })
     const movie = await Movie.findOne({ where: { id: req.params.id } })
     if (!movie) return res.status(404).json({ message: 'Movie not found' })
+    const genre = await Genre.findOne({
+      where: { id: genreId || movie.genreId },
+    })
+    if (!genre) return res.status(404).json({ message: 'Genre not found' })
+
     const image_url = req.files.image
       ? await uploadImage(req.files)
       : movie.image
