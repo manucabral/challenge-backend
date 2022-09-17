@@ -19,63 +19,68 @@ const user = require('../data/users.json')
 
 describe('GENRE', () => {
   // get a valid token
-  beforeEach((done) => {
-    chai
-      .request(app)
-      .post('/auth/login')
-      .send(user)
-      .end((err, res) => {
-        token = res.body.token
-        done()
-      })
+  beforeEach(async () => {
+    const res = await chai.request(app).post('/auth/login').send(user)
+    token = res.body.token
+  })
+
+  describe('POST /genres/new', () => {
+    it('should not access a non existent route', async () => {
+      const res = await chai
+        .request(app)
+        .post('/genres/new')
+        .set('Authorization', token)
+      expect(res).to.have.status(404)
+    })
   })
 
   describe('POST /genres', () => {
-    it('should create a new genre', (done) => {
-      chai
+    it('should not post a genre without a name', async () => {
+      const res = await chai
+        .request(app)
+        .post('/genres')
+        .set('Authorization', token)
+      expect(res).to.have.status(400)
+      expect(res.body).to.be.an('object')
+      expect(res.body).to.have.property('message')
+      expect(res.body.message).to.equal('Missing required fields')
+    })
+    it('should create a new genre', async () => {
+      const res = await chai
         .request(app)
         .post('/genres')
         .set('Authorization', token)
         .field('name', 'testgenre')
-        .end((err, res) => {
-          expect(res).to.have.status(201)
-          expect(res.body).to.be.an('object')
-          expect(res.body).to.have.property('message')
-          expect(res.body.message).to.equal('Genre created successfully')
-          done()
-        })
+      expect(res).to.have.status(201)
+      expect(res.body).to.be.an('object')
+      expect(res.body).to.have.property('message')
+      expect(res.body.message).to.equal('Genre created successfully')
     })
   })
 
   // get all genres
   describe('GET /genres', () => {
-    it('should get all genres', (done) => {
-      chai
+    it('should get all genres', async () => {
+      const res = await chai
         .request(app)
         .get('/genres')
         .set('Authorization', token)
-        .end((err, res) => {
-          expect(res).to.have.status(200)
-          expect(res.body).to.be.an('array')
-          expect(res.body.length).to.be.greaterThan(0)
-          done()
-        })
+      expect(res).to.have.status(200)
+      expect(res.body).to.be.an('array')
+      expect(res.body.length).to.be.greaterThan(0)
     })
   })
 
   describe('DELETE /genres/:id', () => {
-    it('should delete a genre', (done) => {
-      chai
+    it('should delete a genre', async () => {
+      const res = await chai
         .request(app)
         .delete('/genres/1')
         .set('Authorization', token)
-        .end((err, res) => {
-          expect(res).to.have.status(200)
-          expect(res.body).to.be.an('object')
-          expect(res.body).to.have.property('message')
-          expect(res.body.message).to.equal('Genre deleted successfully')
-          done()
-        })
+      expect(res).to.have.status(200)
+      expect(res.body).to.be.an('object')
+      expect(res.body).to.have.property('message')
+      expect(res.body.message).to.equal('Genre deleted successfully')
     })
   })
 })

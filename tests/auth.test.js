@@ -25,16 +25,13 @@ describe('AUTH', () => {
     })
   })
 
-  describe('POST /auth/register', () => {
-    it('should register a user and returns a token', (done) => {
+  describe('POST /auth/new/user', () => {
+    it('should not access a non existent route', (done) => {
       chai
         .request(app)
-        .post('/auth/register')
-        .send(user)
-        .end((err, res) => {
-          expect(res).to.have.status(201)
-          expect(res.body).to.have.property('token')
-          expect(res.body.token).to.be.a('string')
+        .post('/auth/new/register')
+        .end((_, res) => {
+          expect(res).to.have.status(404)
           done()
         })
     })
@@ -49,6 +46,18 @@ describe('AUTH', () => {
           expect(res).to.have.status(400)
           expect(res.body).to.have.property('message')
           expect(res.body.message).to.be.a('string')
+          done()
+        })
+    })
+    it('should register a user and returns a token', (done) => {
+      chai
+        .request(app)
+        .post('/auth/register')
+        .send(user)
+        .end((err, res) => {
+          expect(res).to.have.status(201)
+          expect(res.body).to.have.property('token')
+          expect(res.body.token).to.be.a('string')
           done()
         })
     })
