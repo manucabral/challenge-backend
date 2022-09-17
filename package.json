@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node src/index.js",
         "dev": "set NODE_ENV=development && nodemon src/index.js",
-        "test": "set NODE_ENV=test && mocha src/tests/*.test.js"
+        "test": "set NODE_ENV=test && mocha tests/*.test.js"
     },
     "repository": {
         "type": "git",
