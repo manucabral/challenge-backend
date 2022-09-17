@@ -9,12 +9,13 @@ const { expect } = chai
 
 // required modules
 const app = require('../src/server')
-const { User } = require('../src/models')
 const { sequelize } = require('../src/database')
-const user = require('../data/users.json')
 
 // use chai-http
 chai.use(chaiHttp)
+
+// require a test user
+const user = require('../data/users.json')
 
 describe('AUTH', () => {
   // force sync the database
