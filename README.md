@@ -4,7 +4,7 @@ Disney REST API Backend Challenge by Alkemy
 
 The API is deployed [here](https://disney-challenge.up.railway.app/) you can test it
 ### 📚 Documentation
-See the full API documentation [here]()
+See the full API documentation [here](https://documenter.getpostman.com/view/11661322/2s7YfU8YVy)
 
 ### 📦 Installation
 ```bash
