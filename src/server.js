@@ -28,8 +28,12 @@ app.set('port', PORT)
 // use the compression middleware
 app.use(compression())
 
+// set the mode
+app.set('env', process.env.NODE_ENV.trim())
+console.log(`Using ${app.get('env')} mode`)
+
 // use the morgan middleware
-app.use(logger)
+if (app.get('env') === 'development') app.use(logger)
 
 // use json data
 app.use(express.json())
