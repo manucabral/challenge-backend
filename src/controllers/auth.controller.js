@@ -21,10 +21,11 @@ const register = async (req, res) => {
         email: user.email,
         name: 'tester',
       })
-    else
+    else if (process.env.NODE_ENV === 'development')
       console.log(
         "Can't send email. Please provide a valid API key and email address."
       )
+
     res.status(201).json({ token })
   } catch (error) {
     res.status(500).json({ error: error.message })
