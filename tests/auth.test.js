@@ -10,45 +10,26 @@ const { expect } = chai
 // required modules
 const app = require('../src/server')
 const { User } = require('../src/models')
+const { sequelize } = require('../src/database')
+const user = require('../data/users.json')
 
 // use chai-http
 chai.use(chaiHttp)
 
 describe('AUTH', () => {
-  describe('POST /auth/login', () => {
-    it('should login a user and returns a token', (done) => {
-      const data = {
-        email: 'test@gmail.com',
-        password: 'wowsuperpass',
-      }
-      before(async () => {
-        await User.create(data)
-      })
-      chai
-        .request(app)
-        .post('/auth/login')
-        .send(data)
-        .end((err, res) => {
-          expect(res).to.have.status(200)
-          expect(res.body).to.have.property('token')
-          expect(res.body.token).to.be.a('string')
-          done()
-        })
+  // force sync the database
+  before((done) => {
+    sequelize.sync({ force: true }).then(() => {
+      done()
     })
   })
+
   describe('POST /auth/register', () => {
     it('should register a user and returns a token', (done) => {
-      after(async () => {
-        await User.destroy({ where: { email: 'newuser@hotmail.com' } })
-      })
-      const data = {
-        email: 'newuser@hotmail.com',
-        password: 'anicepassword',
-      }
       chai
         .request(app)
         .post('/auth/register')
-        .send(data)
+        .send(user)
         .end((err, res) => {
           expect(res).to.have.status(201)
           expect(res.body).to.have.property('token')
@@ -57,6 +38,7 @@ describe('AUTH', () => {
         })
     })
   })
+
   describe('POST /auth/register', () => {
     it('should not register a user without email and password', (done) => {
       chai
@@ -66,6 +48,21 @@ describe('AUTH', () => {
           expect(res).to.have.status(400)
           expect(res.body).to.have.property('message')
           expect(res.body.message).to.be.a('string')
+          done()
+        })
+    })
+  })
+
+  describe('POST /auth/login', () => {
+    it('should login a user and returns a token', (done) => {
+      chai
+        .request(app)
+        .post('/auth/login')
+        .send(user)
+        .end((err, res) => {
+          expect(res).to.have.status(200)
+          expect(res.body).to.have.property('token')
+          expect(res.body.token).to.be.a('string')
           done()
         })
     })
